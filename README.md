@@ -64,7 +64,7 @@ saferent-maintenance-platform/
 
 ## Documentation
 
-- [ROADMAP.md](ROADMAP.md) tracks completed, current, and upcoming build steps.
+- [ROADMAP.md](ROADMAP.md) tracks completed, current, and upcoming steps.
 - [LEARNING_LOG.md](LEARNING_LOG.md) records what was learned after each step.
 - [docs/architecture.md](docs/architecture.md) explains how the system is designed.
 - [docs/api-design.md](docs/api-design.md) documents APIs as they are added.
