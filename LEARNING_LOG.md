@@ -201,3 +201,111 @@ I connected the React frontend to the Spring Boot backend by adding a typed heal
 - Explain why `localhost:5173` and `localhost:8080` are different origins.
 - Find the `fetch` call and describe what happens when it succeeds.
 - Stop the backend and refresh the frontend to see the error state.
+
+## Step 1.1 - PostgreSQL with Docker Compose
+
+### What was built
+
+Added PostgreSQL as the first database service:
+
+- Root `compose.yaml` runs a `postgres` container.
+- PostgreSQL uses the local database name `saferent`.
+- Backend now has JPA and PostgreSQL driver dependencies.
+- Backend datasource settings are read from environment variables with local development defaults.
+- Added a database connection test that runs `select version()` against PostgreSQL.
+
+No application tables were created yet. The first table comes in Step 1.2.
+
+### What concept I learned
+
+PostgreSQL is a relational database used for structured data like users, properties, units, and maintenance requests. Docker Compose lets us define local services in one file so we can start PostgreSQL consistently. A database connection string tells the backend where the database is, what database name to use, and how to authenticate.
+
+### Key files
+
+- `compose.yaml` defines the PostgreSQL container.
+- `.env.example` documents local database environment variables.
+- `docker/README.md` explains the local Docker setup.
+- `backend/pom.xml` adds Spring Data JPA and the PostgreSQL driver.
+- `backend/src/main/resources/application.properties` configures the datasource.
+- `backend/src/test/java/com/saferent/database/DatabaseConnectionTest.java` verifies backend-to-database connectivity.
+
+### Commands used
+
+```bash
+docker compose up -d postgres
+docker compose ps
+```
+
+```bash
+cd backend
+./mvnw test
+```
+
+During implementation, Docker Desktop did not become responsive in this environment, so the Compose file was validated and the backend was packaged without running tests:
+
+```bash
+docker compose config
+cd backend
+./mvnw -DskipTests package
+```
+
+### Interview explanation
+
+I added PostgreSQL to SafeRent using Docker Compose and configured the Spring Boot backend to connect through environment-based datasource settings. I also added a database connection test with `JdbcTemplate` so the project can verify that the backend is actually talking to PostgreSQL.
+
+### Practice before the next step
+
+- Explain what a connection string is.
+- Start PostgreSQL with Docker Compose and inspect `docker compose ps`.
+- Run the backend tests after PostgreSQL is running.
+
+## Step 1.2 - User entity and users table
+
+### What was built
+
+Created the first database-backed domain model:
+
+- `User` JPA entity.
+- `UserRole` enum with `TENANT`, `PROPERTY_MANAGER`, `TECHNICIAN`, and `ADMIN`.
+- `UserRepository` for database access.
+- Flyway migration that creates the `users` table.
+- Repository test that saves a user and finds it by email.
+
+### What concept I learned
+
+An entity is a Java class that represents a database table. A table stores rows of data, and each column stores one piece of a row, such as `email` or `created_at`. A repository is a Spring Data interface that gives us common database operations without writing SQL for every query. A migration is a versioned SQL file that changes the database schema in a controlled way.
+
+### Key files
+
+- `backend/src/main/java/com/saferent/user/User.java` maps Java fields to the `users` table.
+- `backend/src/main/java/com/saferent/user/UserRole.java` defines allowed user roles.
+- `backend/src/main/java/com/saferent/user/UserRepository.java` provides database access.
+- `backend/src/main/resources/db/migration/V1__create_users_table.sql` creates the table.
+- `backend/src/test/java/com/saferent/user/UserRepositoryTest.java` verifies repository behavior.
+- `backend/pom.xml` adds Flyway dependencies.
+- `backend/src/main/resources/application.properties` tells Hibernate to validate the schema created by Flyway.
+
+### Commands used
+
+```bash
+cd backend
+./mvnw -DskipTests package
+```
+
+Full test command after PostgreSQL is running:
+
+```bash
+docker compose up -d postgres
+cd backend
+./mvnw test
+```
+
+### Interview explanation
+
+I created the first database-backed model for SafeRent by adding a `User` JPA entity, a `UserRole` enum, a Spring Data repository, and a Flyway migration for the `users` table. Flyway owns the schema change, while Hibernate validates that the Java entity matches the database table.
+
+### Practice before the next step
+
+- Explain the difference between a Java entity and a database table.
+- Open the migration file and match each SQL column to a Java field.
+- Run the repository test after PostgreSQL is running.

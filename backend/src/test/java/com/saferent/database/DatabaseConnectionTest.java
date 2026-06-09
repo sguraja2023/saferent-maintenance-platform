@@ -1,0 +1,22 @@
+package com.saferent.database;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+@SpringBootTest
+class DatabaseConnectionTest {
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	@Test
+	void connectsToPostgresDatabase() {
+		String databaseVersion = jdbcTemplate.queryForObject("select version()", String.class);
+
+		assertThat(databaseVersion).contains("PostgreSQL");
+	}
+}

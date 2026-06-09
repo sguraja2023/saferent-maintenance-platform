@@ -6,11 +6,12 @@ This project is being built in small vertical slices. Each slice should be easy 
 
 ## Current Status
 
-Step 0.4 is complete: the frontend calls the backend health endpoint and displays the backend status.
+Step 1.2 is complete: PostgreSQL is configured and the backend has its first database-backed entity/table.
 
 - Backend: `GET /api/health`
 - Frontend: React + TypeScript home page at `/` with backend health status
-- Docker setup starts when the database is introduced.
+- Database: PostgreSQL container through Docker Compose
+- First table: `users`
 
 ## Target Tech Stack
 
@@ -51,7 +52,8 @@ DevOps:
 saferent-maintenance-platform/
   backend/                 Spring Boot backend
   frontend/                React + TypeScript frontend
-  docker/                  planned for Docker-related steps
+  docker/                  Docker notes and service documentation
+  compose.yaml             Local Docker Compose services
   docs/
     architecture.md
     api-design.md
@@ -72,6 +74,20 @@ saferent-maintenance-platform/
 - [docs/interview-notes.md](docs/interview-notes.md) keeps short interview-ready explanations.
 
 ## How To Run
+
+PostgreSQL:
+
+From the repository root:
+
+```bash
+docker compose up -d postgres
+```
+
+Check the container:
+
+```bash
+docker compose ps
+```
 
 Backend:
 
@@ -118,6 +134,8 @@ http://localhost:8080
 
 You can copy `frontend/.env.example` to `frontend/.env` if you want to customize it later.
 
+Backend database settings use environment variables. Local defaults are documented in [.env.example](.env.example).
+
 ## How To Test
 
 Backend:
@@ -125,9 +143,12 @@ Backend:
 From the repository root:
 
 ```bash
+docker compose up -d postgres
 cd backend
 ./mvnw test
 ```
+
+Flyway runs database migrations automatically when the backend starts or when tests load the Spring context.
 
 Frontend:
 

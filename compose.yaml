@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: saferent-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-saferent}
+      POSTGRES_USER: ${POSTGRES_USER:-saferent}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-saferent_dev_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - saferent_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-saferent} -d ${POSTGRES_DB:-saferent}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  saferent_postgres_data:
+    name: saferent_postgres_data

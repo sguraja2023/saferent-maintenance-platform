@@ -4,6 +4,8 @@ This document will track REST and GraphQL APIs as they are added.
 
 ## Current REST APIs
 
+Step 1.2 did not add new API endpoints. It added the `User` entity, `users` table, and repository foundation for the upcoming registration API.
+
 ### Health Check
 
 ```http

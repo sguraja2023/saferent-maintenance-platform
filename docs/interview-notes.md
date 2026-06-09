@@ -22,6 +22,14 @@ I created the first frontend slice using React, TypeScript, Vite, and React Rout
 
 I connected the React frontend to the Spring Boot backend health endpoint. The frontend calls `GET /api/health`, displays the backend service status, and the backend allows the local frontend origin with CORS so the browser request works during development.
 
+## Step 1.1 Explanation
+
+I added PostgreSQL to the project using Docker Compose and configured Spring Boot to connect with environment-based datasource settings. This gives the backend a real relational database foundation before adding entities like users, properties, units, and maintenance requests.
+
+## Step 1.2 Explanation
+
+I created the first database-backed model by adding a `User` JPA entity, a `UserRole` enum, a Spring Data repository, and a Flyway migration for the `users` table. This gives the authentication flow a clean persistence foundation before adding registration and login APIs.
+
 ## Monorepo Explanation
 
 A monorepo is a single repository that contains multiple parts of an application. For SafeRent, that means the backend, frontend, Docker setup, and documentation will live together while still being separated into clear folders.

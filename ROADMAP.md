@@ -40,18 +40,36 @@ Connected the React frontend to the Spring Boot backend health endpoint and adde
 - CORS allowance for the local Vite dev server
 - Backend CORS test
 
-## Current
-
 ### Step 1.1 - Add PostgreSQL using Docker Compose
 
-Next step after confirmation: add PostgreSQL using Docker Compose and connect the backend to the database.
+Added PostgreSQL as the first database service and connected the backend to it:
+
+- Root `compose.yaml` with a `postgres` service
+- PostgreSQL database, user, password, port, health check, and named volume
+- Backend datasource configuration using environment-variable-friendly defaults
+- JPA and PostgreSQL dependencies
+- Database connection test using `JdbcTemplate`
+
+### Step 1.2 - Create User entity/table
+
+Created the first database-backed model:
+
+- `User` JPA entity
+- `UserRole` enum
+- `UserRepository`
+- Flyway migration for the `users` table
+- Repository test for saving and finding a user by email
+
+## Current
+
+### Step 1.3 - Create registration API
+
+Next step after confirmation: create `POST /api/auth/register` using DTOs, password hashing, and the `UserRepository`.
 
 ## Upcoming
 
 ### Phase 1 - Authentication and role foundation
 
-- Step 1.1 - Add PostgreSQL using Docker Compose.
-- Step 1.2 - Create User entity/table.
 - Step 1.3 - Create registration API.
 - Step 1.4 - Create login API with JWT.
 - Step 1.5 - Secure APIs with Spring Security.
