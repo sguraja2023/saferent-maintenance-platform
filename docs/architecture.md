@@ -55,6 +55,14 @@ jdbc:postgresql://localhost:5432/saferent
 
 For schema management, SafeRent uses Flyway migrations. Hibernate is configured to validate the schema rather than create it automatically.
 
+The registration API follows a controller-service-repository flow:
+
+```text
+HTTP request -> AuthController -> AuthService -> UserRepository -> PostgreSQL
+```
+
+DTOs keep API input/output separate from the database entity.
+
 ## Why This Structure Is Useful
 
 This structure mirrors how many real products are built:

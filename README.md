@@ -6,9 +6,10 @@ This project is being built in small vertical slices. Each slice should be easy 
 
 ## Current Status
 
-Step 1.2 is complete: PostgreSQL is configured and the backend has its first database-backed entity/table.
+Step 1.3 is complete: PostgreSQL is configured, the backend has a `users` table, and the registration API exists.
 
 - Backend: `GET /api/health`
+- Auth: `POST /api/auth/register`
 - Frontend: React + TypeScript home page at `/` with backend health status
 - Database: PostgreSQL container through Docker Compose
 - First table: `users`
@@ -110,6 +111,19 @@ Expected response:
 {"status":"UP","service":"SafeRent Backend"}
 ```
 
+Register a user:
+
+```bash
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fullName": "Taylor Tenant",
+    "email": "taylor.tenant@example.com",
+    "password": "password123",
+    "role": "TENANT"
+  }'
+```
+
 Frontend:
 
 From the repository root:
@@ -149,6 +163,13 @@ cd backend
 ```
 
 Flyway runs database migrations automatically when the backend starts or when tests load the Spring context.
+
+Focused tests that do not require PostgreSQL:
+
+```bash
+cd backend
+./mvnw -Dtest=AuthServiceTest,AuthControllerTest,HealthControllerTest test
+```
 
 Frontend:
 

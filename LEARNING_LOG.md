@@ -309,3 +309,69 @@ I created the first database-backed model for SafeRent by adding a `User` JPA en
 - Explain the difference between a Java entity and a database table.
 - Open the migration file and match each SQL column to a Java field.
 - Run the repository test after PostgreSQL is running.
+
+## Step 1.3 - Registration API
+
+### What was built
+
+Created the first authentication API:
+
+```http
+POST /api/auth/register
+```
+
+It accepts:
+
+- `fullName`
+- `email`
+- `password`
+- `role`
+
+Supported roles:
+
+- `TENANT`
+- `PROPERTY_MANAGER`
+- `TECHNICIAN`
+- `ADMIN`
+
+The API hashes the password before saving the user and returns a response that does not expose the password hash.
+
+### What concept I learned
+
+A DTO is a Data Transfer Object. It defines the shape of data coming into or leaving an API. A request body is the JSON the client sends to the backend. A response body is the JSON the backend sends back. Password hashing means storing a one-way protected value instead of storing the plain password.
+
+### Key files
+
+- `backend/src/main/java/com/saferent/auth/AuthController.java` exposes the registration endpoint.
+- `backend/src/main/java/com/saferent/auth/AuthService.java` contains registration business logic.
+- `backend/src/main/java/com/saferent/auth/RegisterRequest.java` defines the request body.
+- `backend/src/main/java/com/saferent/auth/RegisterResponse.java` defines the response body.
+- `backend/src/main/java/com/saferent/config/PasswordConfig.java` creates the BCrypt password encoder.
+- `backend/src/main/java/com/saferent/common/ApiExceptionHandler.java` maps registration errors to HTTP responses.
+- `backend/src/test/java/com/saferent/auth/AuthServiceTest.java` verifies registration business rules.
+- `backend/src/test/java/com/saferent/auth/AuthControllerTest.java` verifies the HTTP response shape.
+
+### Commands used
+
+```bash
+cd backend
+./mvnw -Dtest=AuthServiceTest,AuthControllerTest,HealthControllerTest test
+```
+
+Full test command after PostgreSQL is running:
+
+```bash
+docker compose up -d postgres
+cd backend
+./mvnw test
+```
+
+### Interview explanation
+
+I added the registration API with request and response DTOs, a service layer, BCrypt password hashing, duplicate-email handling, and basic validation. The API saves users through Spring Data JPA and returns safe user details without exposing the password hash.
+
+### Practice before the next step
+
+- Explain why API responses should not include `passwordHash`.
+- Find where the password gets hashed.
+- Send a duplicate registration request and explain why it should return HTTP 409.

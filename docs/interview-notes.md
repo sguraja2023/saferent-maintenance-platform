@@ -30,6 +30,10 @@ I added PostgreSQL to the project using Docker Compose and configured Spring Boo
 
 I created the first database-backed model by adding a `User` JPA entity, a `UserRole` enum, a Spring Data repository, and a Flyway migration for the `users` table. This gives the authentication flow a clean persistence foundation before adding registration and login APIs.
 
+## Step 1.3 Explanation
+
+I added the registration API with DTOs, a service layer, BCrypt password hashing, duplicate-email handling, and basic validation. The endpoint saves users through Spring Data JPA and returns safe user details without exposing password hashes.
+
 ## Monorepo Explanation
 
 A monorepo is a single repository that contains multiple parts of an application. For SafeRent, that means the backend, frontend, Docker setup, and documentation will live together while still being separated into clear folders.

@@ -60,17 +60,28 @@ Created the first database-backed model:
 - Flyway migration for the `users` table
 - Repository test for saving and finding a user by email
 
-## Current
-
 ### Step 1.3 - Create registration API
 
-Next step after confirmation: create `POST /api/auth/register` using DTOs, password hashing, and the `UserRepository`.
+Created the first auth endpoint:
+
+- `POST /api/auth/register`
+- Request/response DTOs
+- `AuthService` registration flow
+- BCrypt password hashing
+- Duplicate email handling
+- Basic input validation
+- Controller and service tests
+
+## Current
+
+### Step 1.4 - Create login API
+
+Next step after confirmation: create `POST /api/auth/login` and return a JWT token.
 
 ## Upcoming
 
 ### Phase 1 - Authentication and role foundation
 
-- Step 1.3 - Create registration API.
 - Step 1.4 - Create login API with JWT.
 - Step 1.5 - Secure APIs with Spring Security.
 - Step 1.6 - Build frontend register page.

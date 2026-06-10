@@ -4,8 +4,6 @@ This document will track REST and GraphQL APIs as they are added.
 
 ## Current REST APIs
 
-Step 1.2 did not add new API endpoints. It added the `User` entity, `users` table, and repository foundation for the upcoming registration API.
-
 ### Health Check
 
 ```http
@@ -32,6 +30,42 @@ Frontend usage:
 Local CORS:
 
 - The backend allows `http://localhost:5173` and `http://127.0.0.1:5173` for this endpoint so the Vite dev server can call it from the browser.
+
+### Register User
+
+```http
+POST /api/auth/register
+```
+
+Request body:
+
+```json
+{
+  "fullName": "Taylor Tenant",
+  "email": "taylor.tenant@example.com",
+  "password": "password123",
+  "role": "TENANT"
+}
+```
+
+Successful response: `201 Created`
+
+```json
+{
+  "id": 1,
+  "fullName": "Taylor Tenant",
+  "email": "taylor.tenant@example.com",
+  "role": "TENANT",
+  "createdAt": "2026-06-09T12:00:00Z"
+}
+```
+
+Notes:
+
+- The password is hashed before storage.
+- The response never returns `password` or `passwordHash`.
+- Duplicate email returns `409 Conflict`.
+- Basic validation errors return `400 Bad Request`.
 
 ## API Design Principles
 

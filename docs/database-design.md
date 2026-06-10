@@ -29,6 +29,8 @@ Columns:
 - `role`: user role, stored as text.
 - `created_at`: timestamp for when the user row was created.
 
+The registration API writes to this table through the `UserRepository`. Passwords are stored only as hashes in `password_hash`.
+
 Flyway migration:
 
 - `V1__create_users_table.sql`
